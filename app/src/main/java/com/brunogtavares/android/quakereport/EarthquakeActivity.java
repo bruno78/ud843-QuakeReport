@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.android.quakereport;
+package com.brunogtavares.android.quakereport;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -41,15 +40,13 @@ public class EarthquakeActivity extends AppCompatActivity {
         earthquakes.add(new Earthquake(4.9,"Rio de Janeiro", "Aug 19, 2012"));
         earthquakes.add(new Earthquake(1.6,"Paris", "Oct 30, 2011"));
 
-        // Find a reference to the {@link ListView} in the layout
+        // Create an {@link EarthquakeAdapter}, whose data source is a list of
+        // {@link Earthquake}s. The adapter knows how to create list item views for each
+        // in the list.
+        EarthquakeAdapter adapter = new EarthquakeAdapter(this, earthquakes);
+
+        // Get a reference to the listView, and attach the adapter to the listView.
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
-
-        // Create a new {@link ArrayAdapter} of earthquakes
-        ArrayAdapter<Earthquake> adapter = new ArrayAdapter<Earthquake>(
-                this, android.R.layout.simple_list_item_1, earthquakes);
-
-        // Set the adapter on the {@link ListView}
-        // so the list can be populated in the user interface
         earthquakeListView.setAdapter(adapter);
     }
 }

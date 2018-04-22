@@ -1,4 +1,4 @@
-package com.example.android.quakereport;
+package com.brunogtavares.android.quakereport;
 
 /**
  * Created by brunogtavares on 4/22/18.
