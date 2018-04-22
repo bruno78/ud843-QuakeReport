@@ -4,13 +4,13 @@ package com.example.android.quakereport;
  * Created by brunogtavares on 4/22/18.
  */
 
-public class EarthQuake {
+public class Earthquake {
 
     private Double magnitude;
     private String location;
     private String date;
 
-    public EarthQuake(Double magnitude, String location, String date) {
+    public Earthquake(Double magnitude, String location, String date) {
         this.magnitude = magnitude;
         this.location = location;
         this.date = date;
