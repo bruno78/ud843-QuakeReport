@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.brunogtavares.android.quakereport.model.Earthquake;
+
 import java.util.ArrayList;
 
 /**

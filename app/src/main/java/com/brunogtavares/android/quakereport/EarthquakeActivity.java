@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
+import com.brunogtavares.android.quakereport.model.Earthquake;
 import com.brunogtavares.android.quakereport.utils.QueryUtils;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.brunogtavares.android.quakereport;
+package com.brunogtavares.android.quakereport.model;
 
 /**
  * Created by brunogtavares on 4/22/18.
