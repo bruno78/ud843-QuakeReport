@@ -6,22 +6,22 @@ package com.brunogtavares.android.quakereport;
 
 public class Earthquake {
 
-    private Double magnitude;
+    private String magnitude;
     private String location;
     private String date;
 
-    public Earthquake(Double magnitude, String location, String date) {
+    public Earthquake(String magnitude, String location, String date) {
         this.magnitude = magnitude;
         this.location = location;
         this.date = date;
     }
 
 
-    public Double getMagnitude() {
+    public String getMagnitude() {
         return magnitude;
     }
 
-    public void setMagnitude(Double magnitude) {
+    public void setMagnitude(String magnitude) {
         this.magnitude = magnitude;
     }
 
