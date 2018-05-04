@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.brunogtavares.android.quakereport.model.Earthquake;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,18 +55,33 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
 
         // Find the TextView in the earthquake_list_item.xmlml layout with the ID location
         TextView locationTextView = (TextView) listItemView.findViewById(R.id.tv_location_name);
+        TextView offsetLocationTextView = (TextView) listItemView.findViewById(R.id.tv_offset_location);
 
         // Get the location from the current Earthquake object and
         // set text to the location TextView
-        locationTextView.setText(currentEarthquakeItem.getLocation());
+        String location = currentEarthquakeItem.getLocation();
+        int endOffset = location.indexOf("of");
 
-        // Find the TextView in the earthquake_list_item.xmlml layout with the ID date
-        TextView dateTextView = (TextView) listItemView.findViewById(R.id.tv_date);
+        if(endOffset > -1) {
+            String offSetLocation = location.substring(0, endOffset + 2);
+            String locationName = location.substring(endOffset + 3, location.length());
+            offsetLocationTextView.setText(offSetLocation);
+            locationTextView.setText(locationName);
+
+        }
+        else {
+            offsetLocationTextView.setText("Near the");
+            locationTextView.setText(location);
+        }
+
 
         // Get the time in milliseconds and pass it to create a date object to be used
         // with two date formats.
         long timeInMilliSeconds = currentEarthquakeItem.getDate();
         Date dateObject = new Date(timeInMilliSeconds);
+
+        // Find the TextView in the earthquake_list_item.xmlml layout with the ID date
+        TextView dateTextView = (TextView) listItemView.findViewById(R.id.tv_date);
 
         // Get the date from the current Earthquake object and
         // set text to the date TextView

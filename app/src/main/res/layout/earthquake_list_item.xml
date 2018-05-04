@@ -14,30 +14,31 @@
         tools:text="7.2" />
 
     <TextView
+        android:id="@+id/tv_offset_location"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:text="74km NW of" />
+
+    <TextView
         android:id="@+id/tv_location_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         tools:text="San Francisco" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/tv_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="vertical">
+        tools:text="Feb 2, 2016" />
 
-        <TextView
-            android:id="@+id/tv_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Feb 2, 2016" />
-        <TextView
-            android:id="@+id/tv_dateTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="7:47 PM" />
-
-    </LinearLayout>
-
+    <TextView
+        android:id="@+id/tv_dateTime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:text="7:47 PM" />
 
 </LinearLayout>
