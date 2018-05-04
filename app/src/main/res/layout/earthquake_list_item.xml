@@ -20,11 +20,24 @@
         android:layout_weight="1"
         tools:text="San Francisco" />
 
-    <TextView
-        android:id="@+id/tv_date"
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        tools:text="Feb 2, 2016" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Feb 2, 2016" />
+        <TextView
+            android:id="@+id/tv_dateTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="7:47 PM" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

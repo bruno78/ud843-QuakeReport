@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import com.brunogtavares.android.quakereport.model.Earthquake;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by brunogtavares on 4/22/18.
@@ -59,9 +61,25 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
         // Find the TextView in the earthquake_list_item.xmlml layout with the ID date
         TextView dateTextView = (TextView) listItemView.findViewById(R.id.tv_date);
 
+        // Get the time in milliseconds and pass it to create a date object to be used
+        // with two date formats.
+        long timeInMilliSeconds = currentEarthquakeItem.getDate();
+        Date dateObject = new Date(timeInMilliSeconds);
+
         // Get the date from the current Earthquake object and
         // set text to the date TextView
-        dateTextView.setText(currentEarthquakeItem.getDate());
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("MMM DD, yyyy");
+        String dateToDisplay = dateFormatter.format(dateObject);
+        dateTextView.setText(dateToDisplay);
+
+        // Find the TextView in the earthquake_list_item.xmlml layout with the ID dateTime
+        TextView dateTimeTextView = (TextView) listItemView.findViewById(R.id.tv_dateTime);
+
+        // Get the time from the current Earthquake object and
+        // set text to the dateTime TextView
+        SimpleDateFormat dateTimeFormatter = new SimpleDateFormat("h:mm a");
+        String dateTimeToDisplay = dateTimeFormatter.format(dateObject);
+        dateTimeTextView.setText(dateTimeToDisplay);
 
         // Return the whole list item layout (3 views: magnitude, location, and date)
         // so that it can be shown in the list view
