@@ -11,6 +11,7 @@ import com.brunogtavares.android.quakereport.model.Earthquake;
 
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,7 +52,9 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
 
         // Get the magnitude from the current Earthquake object and
         // set text to the magnitude TextView
-        magnitudeTextView.setText(currentEarthquakeItem.getMagnitude().toString());
+        DecimalFormat formatter = new DecimalFormat("0.0");
+        String magnitudeValue = formatter.format(currentEarthquakeItem.getMagnitude());
+        magnitudeTextView.setText(magnitudeValue);
 
         // Find the TextView in the earthquake_list_item.xmlml layout with the ID location
         TextView locationTextView = (TextView) listItemView.findViewById(R.id.tv_location_name);
