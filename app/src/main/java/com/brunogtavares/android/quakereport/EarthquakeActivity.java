@@ -30,9 +30,9 @@ import java.util.ArrayList;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
-    public static final String LOG_TAG = EarthquakeActivity.class.getName();
-    public static final String USGS_REQUEST_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
-
+    public final String LOG_TAG = EarthquakeActivity.class.getName();
+    public final String USGS_REQUEST_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
+    private ArrayList<Earthquake> mEarthquakes;
 
 
     @Override
@@ -40,13 +40,13 @@ public class EarthquakeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-
-        ArrayList<Earthquake> earthquakes = QueryUtils.extractEarthquakes();
+        // temporarily set
+        mEarthquakes = null;
 
         // Create an {@link EarthquakeAdapter}, whose data source is a list of
         // {@link Earthquake}s. The adapter knows how to create list item views for each
         // in the list.
-        final EarthquakeAdapter adapter = new EarthquakeAdapter(this, earthquakes);
+        final EarthquakeAdapter adapter = new EarthquakeAdapter(this, mEarthquakes);
 
         // Get a reference to the listView, and attach the adapter to the listView.
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
@@ -70,4 +70,6 @@ public class EarthquakeActivity extends AppCompatActivity {
             }
         });
     }
+
+    // TODO: Refactor by adding a helper method to populate the view and Add AsyncTask
 }
