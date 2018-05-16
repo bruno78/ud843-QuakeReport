@@ -62,7 +62,7 @@ public final class QueryUtils {
      * Return a list of {@link Earthquake} objects that has been built up from
      * parsing a JSON response.
      */
-    public static ArrayList<Earthquake> extractEarthquakes(String url) {
+    public static List<Earthquake> extractEarthquakes(String url) {
 
         // Create URL Object
         URL urlRequest = createUrl(url);
@@ -138,18 +138,18 @@ public final class QueryUtils {
             String line = reader.readLine();
             while(line != null) {
                 output.append(line);
-                reader.readLine();
+                line = reader.readLine();
             }
         }
         return output.toString();
     }
 
-    private static final ArrayList<Earthquake> extractFeatureFromJSON(String JSONObject) {
+    private static List<Earthquake> extractFeatureFromJSON(String earthquakeJSON) {
 
-        if(TextUtils.isEmpty(JSONObject)) return null;
+        if(TextUtils.isEmpty(earthquakeJSON)) return null;
 
         // Create an empty ArrayList that we can start adding earthquakes to
-        ArrayList<Earthquake> earthquakes = new ArrayList<>();
+        List<Earthquake> earthquakes = new ArrayList<>();
 
         // Try to parse the SAMPLE_JSON_RESPONSE. If there's a problem with the way the JSON
         // is formatted, a JSONException exception object will be thrown.
@@ -158,7 +158,7 @@ public final class QueryUtils {
 
             // COMPLETED: Parse the response given by the SAMPLE_JSON_RESPONSE string and
             // build up a list of Earthquake objects with the corresponding data.
-            JSONObject response = new JSONObject();
+            JSONObject response = new JSONObject(earthquakeJSON);
             JSONArray features = response.getJSONArray("features");
 
             if(features.length() > 0) {

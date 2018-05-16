@@ -17,6 +17,7 @@ package com.brunogtavares.android.quakereport;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -27,12 +28,12 @@ import com.brunogtavares.android.quakereport.model.Earthquake;
 import com.brunogtavares.android.quakereport.utils.QueryUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class EarthquakeActivity extends AppCompatActivity {
 
     public final String LOG_TAG = EarthquakeActivity.class.getName();
     public final String USGS_REQUEST_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
-    private ArrayList<Earthquake> mEarthquakes;
 
 
     @Override
@@ -40,13 +41,18 @@ public class EarthquakeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.earthquake_activity);
 
-        // temporarily set
-        mEarthquakes = null;
+        // Call async tast to retrieve data.
+        new EarthquakeAsyncTask().execute(USGS_REQUEST_URL);
+
+    }
+
+    private void feedUI(List<Earthquake> list) {
+
 
         // Create an {@link EarthquakeAdapter}, whose data source is a list of
         // {@link Earthquake}s. The adapter knows how to create list item views for each
         // in the list.
-        final EarthquakeAdapter adapter = new EarthquakeAdapter(this, mEarthquakes);
+        final EarthquakeAdapter adapter = new EarthquakeAdapter(this, list);
 
         // Get a reference to the listView, and attach the adapter to the listView.
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
@@ -71,5 +77,23 @@ public class EarthquakeActivity extends AppCompatActivity {
         });
     }
 
-    // TODO: Refactor by adding a helper method to populate the view and Add AsyncTask
+    private class EarthquakeAsyncTask extends AsyncTask<String, Void, List<Earthquake>> {
+
+        @Override
+        protected List<Earthquake> doInBackground(String... urls) {
+
+            if(urls.length < 1 || urls[0] == null) return null;
+            return QueryUtils.extractEarthquakes(urls[0]);
+        }
+
+        @Override
+        protected void onPostExecute(List<Earthquake> earthquakes) {
+            super.onPostExecute(earthquakes);
+
+            if(earthquakes.size() == 0 || earthquakes == null) return;
+            feedUI(earthquakes);
+        }
+
+    }
+
 }

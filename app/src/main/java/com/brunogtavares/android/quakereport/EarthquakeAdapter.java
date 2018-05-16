@@ -16,6 +16,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import android.graphics.drawable.GradientDrawable;
 
@@ -34,7 +35,7 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
      * @param context The current context. Used to inflate the layout file.
      * @param earthquakeList A list of Earthquake objects to display in a list.
      */
-    public EarthquakeAdapter(Activity context, ArrayList<Earthquake> earthquakeList) {
+    public EarthquakeAdapter(Activity context, List<Earthquake> earthquakeList) {
         super(context, 0, earthquakeList);
     }
 
