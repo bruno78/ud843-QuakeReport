@@ -24,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.brunogtavares.android.quakereport.model.Earthquake;
@@ -96,14 +97,21 @@ public class EarthquakeActivity extends AppCompatActivity
 
     @Override
     public void onLoadFinished(Loader<List<Earthquake>> loader, List<Earthquake> earthquakes) {
+
+        // set the invisibility of the Progress bar to invisible
+        View loadingIndicator = findViewById(R.id.pb_loading_indicator);
+        loadingIndicator.setVisibility(View.GONE);
+
         // Set empty state text to display "No earthquakes found."
         mEmptyStateTextView.setText(R.string.no_content);
 
         // Clear the adapter from previous data
         mAdapter.clear();
         // If there's no earthquake data, just return, otherwise populate the adapter
-        if(earthquakes.size() == 0 || earthquakes == null) return;
-        mAdapter.addAll(earthquakes);
+        if(earthquakes.size() != 0 && earthquakes != null) {
+            mAdapter.addAll(earthquakes);
+        }
+
 
     }
 

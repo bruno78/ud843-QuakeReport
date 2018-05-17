@@ -146,6 +146,13 @@ public final class QueryUtils {
 
     private static List<Earthquake> extractFeatureFromJSON(String earthquakeJSON) {
 
+        // Comment this out to test out the Progress Bar
+//        try {
+//            Thread.sleep(2000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
         if(TextUtils.isEmpty(earthquakeJSON)) return null;
 
         // Create an empty ArrayList that we can start adding earthquakes to
