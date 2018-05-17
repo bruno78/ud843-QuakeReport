@@ -75,8 +75,11 @@ public final class QueryUtils {
             Log.e(LOG_TAG, "Error making HTTP request", e);
         }
 
+        // Extract features from json
+        List<Earthquake> earthquakes = extractFeatureFromJSON(jsonResponse);
+
         // Return the list of earthquakes
-        return extractFeatureFromJSON(jsonResponse);
+        return earthquakes;
     }
 
     /**

@@ -16,15 +16,17 @@
 package com.brunogtavares.android.quakereport;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.brunogtavares.android.quakereport.model.Earthquake;
@@ -45,6 +47,7 @@ public class EarthquakeActivity extends AppCompatActivity
     private EarthquakeAdapter mAdapter;
     private TextView mEmptyStateTextView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,8 +56,27 @@ public class EarthquakeActivity extends AppCompatActivity
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
-        // If there's no Earthquake to display, it will display a message with no earthquakes found
+        // Checks for the internet connection.
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnected();
+
         mEmptyStateTextView = (TextView) findViewById(R.id.tv_empty_view);
+
+        if (isConnected) {
+            // Start Load Manager
+            getLoaderManager().initLoader(EARTHQUAKE_LOADER_ID, null,  this);
+        }
+        else {
+            View loadingIndicator = findViewById(R.id.pb_loading_indicator);
+            loadingIndicator.setVisibility(View.GONE);
+
+            // Update empty state with no connection error message
+            mEmptyStateTextView.setText(R.string.no_connection);
+        }
+        // If there's no Earthquake to display, it will display a message with no earthquakes found
         earthquakeListView.setEmptyView(mEmptyStateTextView);
 
         // Create a new adapter that takes an empty list of earthquakes as input
@@ -66,10 +88,10 @@ public class EarthquakeActivity extends AppCompatActivity
 
         earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
                 // Find the current earthquake that was clicked on
-                Earthquake currentEarthquake = mAdapter.getItem(i);
+                Earthquake currentEarthquake = mAdapter.getItem(position);
 
                 // Convert the String URL into a URI object (to pass into the Intent constructor)
                 Uri earthquakeUri = Uri.parse(currentEarthquake.getUrl());
@@ -81,11 +103,6 @@ public class EarthquakeActivity extends AppCompatActivity
                 startActivity(earthquakeIntent);
             }
         });
-
-        // Start Load Manager
-        getLoaderManager().initLoader(EARTHQUAKE_LOADER_ID, null,  this);
-
-
 
     }
 
@@ -108,11 +125,9 @@ public class EarthquakeActivity extends AppCompatActivity
         // Clear the adapter from previous data
         mAdapter.clear();
         // If there's no earthquake data, just return, otherwise populate the adapter
-        if(earthquakes.size() != 0 && earthquakes != null) {
+        if(!earthquakes.isEmpty() && earthquakes != null) {
             mAdapter.addAll(earthquakes);
         }
-
-
     }
 
     @Override
