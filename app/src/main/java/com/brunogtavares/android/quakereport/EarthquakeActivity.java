@@ -24,7 +24,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,6 +52,9 @@ public class EarthquakeActivity extends AppCompatActivity
     /** Adapter for the list of earthquakes */
     private EarthquakeAdapter mAdapter;
     private TextView mEmptyStateTextView;
+    private boolean isConnected;
+
+    private SwipeRefreshLayout swipeContainer;
 
 
     @Override
@@ -60,26 +65,12 @@ public class EarthquakeActivity extends AppCompatActivity
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
 
-        // Checks for the internet connection.
-        ConnectivityManager cm =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnected();
+        // Check whether we have internet or not
+        checkForNetworkStatus();
 
-        mEmptyStateTextView = (TextView) findViewById(R.id.tv_empty_view);
+        // will populate if it's connected;
+        populateUI();
 
-        if (isConnected) {
-            // Start Load Manager
-            getLoaderManager().initLoader(EARTHQUAKE_LOADER_ID, null,  this);
-        }
-        else {
-            View loadingIndicator = findViewById(R.id.pb_loading_indicator);
-            loadingIndicator.setVisibility(View.GONE);
-
-            // Update empty state with no connection error message
-            mEmptyStateTextView.setText(R.string.no_connection);
-        }
         // If there's no Earthquake to display, it will display a message with no earthquakes found
         earthquakeListView.setEmptyView(mEmptyStateTextView);
 
@@ -108,6 +99,60 @@ public class EarthquakeActivity extends AppCompatActivity
             }
         });
 
+        // Find the container view
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.sr_swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                checkForNetworkStatus();
+                populateUI();
+                // Toast.makeText(getApplicationContext(), "Works!", Toast.LENGTH_LONG).show();
+
+                // To keep animation for 3 seconds
+                new Handler().postDelayed(new Runnable() {
+                    @Override public void run() {
+                        // Stop animation (This will be after 3 seconds)
+                        swipeContainer.setRefreshing(false);
+                    }
+                }, 3000); // Delay in millis
+            }
+        });
+
+        // Scheme colors for animation
+        swipeContainer.setColorSchemeColors(
+                getResources().getColor(android.R.color.holo_blue_bright),
+                getResources().getColor(android.R.color.holo_green_light),
+                getResources().getColor(android.R.color.holo_orange_light),
+                getResources().getColor(android.R.color.holo_red_light)
+        );
+    }
+
+    private void checkForNetworkStatus() {
+        // Checks for the internet connection.
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        isConnected = activeNetwork != null &&
+                activeNetwork.isConnected();
+
+        mEmptyStateTextView = (TextView) findViewById(R.id.tv_empty_view);
+    }
+
+    private void populateUI() {
+        // If it's connected it will call the load manager otherwise will display blank.
+        if (isConnected) {
+            // Start Load Manager
+            getLoaderManager().initLoader(EARTHQUAKE_LOADER_ID, null,  this);
+        }
+        else {
+            View loadingIndicator = findViewById(R.id.pb_loading_indicator);
+            loadingIndicator.setVisibility(View.GONE);
+
+            // Update empty state with no connection error message
+            mEmptyStateTextView.setText(R.string.no_connection);
+        }
     }
 
     // Inflates the menu
