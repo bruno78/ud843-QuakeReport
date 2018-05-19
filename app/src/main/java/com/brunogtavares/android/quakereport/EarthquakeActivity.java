@@ -99,7 +99,7 @@ public class EarthquakeActivity extends AppCompatActivity
             }
         });
 
-        // Find the container view
+        // Find the swipe container view
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.sr_swipeContainer);
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
